@@ -2,13 +2,12 @@
 #include "common.h"
 #include "app_itf.h"
 #include "interactor_itf.h"
-#include "model_itf.h"
 #include "adder_itf.h"
 
 class App : implements IApp {
     int refCount ;
 
-    IModel*      model ;
+    IAdder*      model ;
     IInteractor* interactor ;
 
     DISABLE_COPY( App ) ;

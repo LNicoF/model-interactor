@@ -1,21 +1,21 @@
 #pragma once
 #include "common.h"
 #include "interactor_itf.h"
-#include "model_itf.h"
+#include "adder_itf.h"
 #include "reader_itf.h"
 #include "writer_itf.h"
 
 class Interactor : implements IInteractor {
     int refCount ;
 
-    IModel* model ;
+    IAdder* model ;
 
     IReader* reader ;
     IWriter* writer ;
 
     DISABLE_COPY( Interactor ) ;
 public:
-    Interactor( IModel* rModel ) : refCount( 1 ), model( rModel ) {
+    Interactor( IAdder* rModel ) : refCount( 1 ), model( rModel ) {
         model->acquire() ;
         reader = createReader() ;
         writer = createWriter() ;
@@ -46,6 +46,18 @@ public:
         return nullptr ;
     }
 
-    virtual void init() ;
-    virtual void edit() ;
+    virtual void init() {
+        int currentValue = model->value() ;
+        writer->write( currentValue ) ;
+    }
+
+    virtual void edit() {
+        int input ;
+looper:
+        input = reader->read() ;
+        if ( input != 0 ) {
+            writer->write( model->add( input ) ) ;
+            goto looper ;
+        }
+    }
 } ;

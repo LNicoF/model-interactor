@@ -1,8 +1,8 @@
 #pragma once
 #include "common.h"
-#include "model_itf.h"
+#include "object_itf.h"
 
-interface IAdder : extends IModel {
+interface IAdder : extends IObject {
     virtual int value() = 0 ;
     virtual int add( int addend ) = 0 ;
 } ;

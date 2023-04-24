@@ -1,20 +1,19 @@
 #pragma once
-#include "common.h"
-
 #include <iostream>
 
-#include "writer_itf.h"
+#include "common.h"
+#include "reader_itf.h"
 
-class ConsoleWriter : implements IWriter {
+class ConsoleReader : implements IReader {
     int refCount ;
 
-    DISABLE_COPY( ConsoleWriter ) ;
+    DISABLE_COPY( ConsoleReader ) ;
 public:
-    ConsoleWriter() : refCount( 1 ) {
+    ConsoleReader() : refCount( 1 ) {
     }
 
-    virtual ~ConsoleWriter() {
-        LOG_DESTRUCTION( ConsoleWriter ) ;
+    virtual ~ConsoleReader() {
+        LOG_DESTRUCTION( ConsoleReader ) ;
     }
 
     virtual void acquire() {
@@ -30,12 +29,14 @@ public:
     virtual IObject* request( const uint& iid ) {
         if ( iid == Iid< IObject >::getIid() )
             return this ;
-        if ( iid == Iid< IWriter >::getIid() )
+        if ( iid == Iid< IReader >::getIid() )
             return this ;
         return nullptr ;
     }
 
-    virtual void write( int n ) {
-        std::cout << n << std::endl ;
+    virtual int read() {
+        int res ;
+        std::cin >> res ;
+        return res ;
     }
 } ;
